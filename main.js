@@ -14,13 +14,13 @@ if (typeof DeviceMotionEvent.requestPermission === 'function') {
 else if (window.DeviceMotionEvent != undefined) {
   // Android
   accelButton.disabled = false
-  accelButton.innerHTML = "Use Accelerometer (Android : use Google Chrome)"
+  accelButton.innerHTML = "Accelerometer (Android : useing Google Chrome)"
   operatingSystem = "Android"
 }
 else {
   // Non supported devices
   accelButton.disabled = true
-  accelButton.innerHTML = "Use Accelerometer (Not supported on your device)"
+  accelButton.innerHTML = "Accelerometer (NOT SUPPORTED)"
   operatingSystem = "other"
 
 }
