@@ -80,5 +80,6 @@ Force landscape mode
 
 .slider:hover::-webkit-slider-thumb {
     transform: scale(2); /* Scale the thumb on hover */
+     background-color: #ff0000;
     
 }
