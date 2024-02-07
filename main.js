@@ -304,21 +304,32 @@ const speedSlider = document.getElementById("speedSlider");
 const formInput = document.getElementById("input");
 
 // Event listener to handle slider changes
-speedSlider.addEventListener("input", function () {
+speedSlider.addEventListener("input", processSpeed)
+/*{
+  e.preventDefault();
   const speed = parseInt(speedSlider.value);
   // Call a function to handle speed change (e.g., send speed via Bluetooth)
   handleSpeedChange(speed);
-});
+});*/
+
+function processSpeed(event){
+  event.preventDefault();
+  const speed = parseInt(speedSlider.value);
+  // Call a function to handle speed change (e.g., send speed via Bluetooth)
+  handleSpeedChange(speed);
+}
 
 // Event listener to handle slider release
 speedSlider.addEventListener("mouseup", function () {
   // Reset slider to minimum value when released
   // Call a function to handle release (e.g., stop sending speed)
+  handleSpeedChange("0");
 });
 
 // Function to handle speed change
 function handleSpeedChange(speed) {
-  let x = "90;" + speed;
+ 
+  let x = "90;" + parseInt(speed);
   // Implement your logic to handle speed change (e.g., send speed via Bluetooth)
   formInput.value = x;
   sendForm.submit();
@@ -328,11 +339,11 @@ function handleSpeedChange(speed) {
 
 
 // Get the slider and needle elements
-const slider = document.getElementById("slider");
+const slider = document.getElementById("speedSlider");
 const needle = document.querySelector(".needle");
 
 // Function to handle slider input event
-slider.addEventListener("input", function () {
+/*slider.addEventListener("input", function () {
   // Get the value of the slider (0 to 100)
   const sliderValue = parseInt(this.value);
 
@@ -341,7 +352,7 @@ slider.addEventListener("input", function () {
 
   // Rotate the needle accordingly
   needle.style.transform = `rotate(${angle}deg)`;
-});
+});*/
 
 // Function to handle slider change event (when slider is released)
 slider.addEventListener("change", function () {
