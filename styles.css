@@ -1,0 +1,84 @@
+#terminal div {
+    color: gray;
+}
+
+#terminal div.out {
+    color: red;
+}
+
+#terminal div.in {
+    color: blue;
+}
+
+#logo {
+    display: inline-block;
+    position: relative;
+}
+#logo .speedometer {
+    width: 200px;
+    height: 100px; /* as the half of the width */
+    background-color: gold;
+    border-top-left-radius: 110px;  /* 100px of height + 10px of border */
+    border-top-right-radius: 110px; /* 100px of height + 10px of border */
+    border: 10px solid gray;
+    border-bottom: 0;
+    display: inline-block;
+}
+#logo .needle {
+    width: 5px;
+    height: 100px;
+    background: #999999;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+    display: inline-block;
+    left: 107px;
+    position: absolute;
+    top: 10px;
+    transform-origin:bottom;
+}
+
+
+
+/*
+Force landscape mode
+*/
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+  html {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+}
+
+.slider-container {
+    position: absolute;
+    top: 50%;
+    right: 200px;  /*Adjust the distance from the speedometer */
+    transform: translateY(-100%);
+    height: 400px; /* Adjust height as needed */
+    background-color: black;
+}
+
+.slider {
+    -webkit-appearance: slider-vertical; /* For WebKit browsers */
+    appearance: slider-vertical;
+    width: 50px; /* Adjust width as needed */
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    transition: transform 0.3s ease; /* Add transition for smooth scaling */
+
+}
+
+
+.slider:hover::-webkit-slider-thumb {
+    transform: scale(2); /* Scale the thumb on hover */
+    
+}
