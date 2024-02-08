@@ -14,13 +14,13 @@ if (typeof DeviceMotionEvent.requestPermission === 'function') {
 else if (window.DeviceMotionEvent != undefined) {
   // Android
   accelButton.disabled = false
-  accelButton.innerHTML = "Accelerometer (Android : useing Google Chrome)"
+  accelButton.innerHTML = "Use Accelerometer (Android : use Google Chrome)"
   operatingSystem = "Android"
 }
 else {
   // Non supported devices
   accelButton.disabled = true
-  accelButton.innerHTML = "Accelerometer (NOT SUPPORTED)"
+  accelButton.innerHTML = "Use Accelerometer (Not supported on your device)"
   operatingSystem = "other"
 
 }
@@ -63,11 +63,40 @@ function getServoAngle() {
     let rotationAngle = alpha; // Assuming alpha represents the desired rotation angle
 
     // Update the needle's rotation only if it's within the allowed range
-    if (rotationAngle >= 0 && rotationAngle <= 360) {
+    if (rotationAngle <= 60 || rotationAngle >= 300) {
       needle.style.transform = "rotate(" + rotationAngle + "deg)";
-      servoAngle = parseInt(rotationAngle); // Update the servo angle
+      servoAngle = parseInt(rotationAngle + 90); // Update the servo angle
+      handleDirection(servoAngle);
+    }
+    else {
+      let a = parseInt(rotationAngle) - 60;
+      let b = parseInt(rotationAngle) - 300;
+      let near = plusProcheDeZero(a, b);
+      if (near == a){
+          needle.style.transform = "rotate(" + 60 + "deg)";
+          servoAngle = parseInt(60); // Update the servo angle
+          handleDirection(servoAngle);
+      }
+      if (near == b){
+          needle.style.transform = "rotate(" + 300 + "deg)";
+          servoAngle = parseInt(300); // Update the servo angle
+          handleDirection(servoAngle);
+      }
     }
   });
+}
+
+function plusProcheDeZero(nombre1, nombre2) {
+    // Calculer les valeurs absolues des nombres
+    const absNombre1 = Math.abs(nombre1);
+    const absNombre2 = Math.abs(nombre2);
+
+    // Vérifier quelle valeur est la plus proche de zéro
+    if (absNombre1 < absNombre2) {
+        return nombre1;
+    } else {
+        return nombre2;
+    }
 }
 
 //------------------------------------------------------------
@@ -127,6 +156,11 @@ function connect() {
   then(characteristic => startNotifications(characteristic)).
   then(myInterval = setInterval(sendingBLEinfo, 100)).
   catch(error => log(error));
+}
+
+function sendingBLEinfo() {
+  //R = rotation (info on servo motor) ; M = Move (info on motor speed) ; < and > are start and end of packet
+  send("<R" + servoAngle + ">" + "<M" + motor_speed + ">", true);
 }
 
 function requestBluetoothDevice() {
@@ -255,7 +289,7 @@ function handleCharacteristicValueChanged(event) {
 
 // Received data handling
 function receive(data) {
-  log(data, 'in');
+  //log(data, 'in');
 }
 
 
@@ -295,16 +329,17 @@ function send(data, logging = true) {
   }
 
   if (logging) {
-    log(data, 'out');
+    //log(data, 'out');
   }
 }
 
 // Get the speed slider element
 const speedSlider = document.getElementById("speedSlider");
 const formInput = document.getElementById("input");
+let currentSpeed = parseInt(speedSlider.value);
 
 // Event listener to handle slider changes
-speedSlider.addEventListener("input", processSpeed)
+speedSlider.addEventListener("input", handleSpeedChange);
 /*{
   e.preventDefault();
   const speed = parseInt(speedSlider.value);
@@ -312,31 +347,48 @@ speedSlider.addEventListener("input", processSpeed)
   handleSpeedChange(speed);
 });*/
 
-function processSpeed(event){
-  event.preventDefault();
-  const speed = parseInt(speedSlider.value);
-  // Call a function to handle speed change (e.g., send speed via Bluetooth)
-  handleSpeedChange(speed);
-}
 
 // Event listener to handle slider release
 speedSlider.addEventListener("mouseup", function () {
   // Reset slider to minimum value when released
   // Call a function to handle release (e.g., stop sending speed)
   handleSpeedChange("0");
+  // Reset slider to minimum value when released
+  speedSlider.value = 0;
+  slider.value = 0;
 });
 
+speedSlider.addEventListener("touchend", function () {
+  // Reset slider to minimum value when released
+  // Call a function to handle release (e.g., stop sending speed)
+  handleSpeedChange("0");
+  // Reset slider to minimum value when released
+  speedSlider.value = 0;
+  slider.value = 0;
+});
+
+
+
 // Function to handle speed change
-function handleSpeedChange(speed) {
- 
-  let x = "90;" + parseInt(speed);
+function handleSpeedChange(event) {
+  let x = servoAngle + ";" + parseInt(currentSpeed);
   // Implement your logic to handle speed change (e.g., send speed via Bluetooth)
   formInput.value = x;
-  sendForm.submit();
-  console.log("Speed changed to:", speed);
+  event.preventDefault(); // Prevent form sending
+  send(inputField.value); // Send text field contents
+  inputField.value = x; 
+  //inputField.focus(); // Focus on text field
+  console.log("Speed changed to:", currentSpeed);
 }
 
-
+function handleDirection(angle){
+  let x = angle + ";" + parseInt(currentSpeed);
+  // Implement your logic to handle speed change (e.g., send speed via Bluetooth)
+  formInput.value = x;
+  event.preventDefault(); // Prevent form sending
+  send(inputField.value); // Send text field contents
+  inputField.value = x; 
+}
 
 // Get the slider and needle elements
 const slider = document.getElementById("speedSlider");
