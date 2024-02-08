@@ -1,0 +1,107 @@
+#terminal div {
+    color: gray;
+}
+
+#terminal div.out {
+    color: red;
+}
+
+#terminal div.in {
+    color: blue;
+}
+
+#logo {
+    display: inline-block;
+    position: relative;
+}
+
+#logo .speedometer {
+    width: 300px;
+    height: 150px; /* as the half of the width */
+    background-color: gold;
+    border-top-left-radius: 110px;  /* 100px of height + 10px of border */
+    border-top-right-radius: 110px; /* 100px of height + 10px of border */
+    border: 10px solid black;
+    border-bottom: 0;
+    display: inline-block;
+    margin-left: auto; /* Center the speedometer horizontally */
+    margin-right: auto; /* Center the speedometer horizontally */
+}
+
+#logo .needle {
+    width: 10px;
+    height: 150px;
+    background: red;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+    display: inline-block;
+    left: 155px;
+    position: absolute;
+    top: 10px;
+    transform-origin: bottom;
+}
+
+/*
+Force landscape mode
+*/
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+    html {
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        width: 100vh;
+        height: 100vw;
+        overflow-x: hidden;
+        position: absolute;
+        top: 100%;
+        left: 0;
+    }
+}
+
+.slider-container {
+    position: absolute;
+    top: 50%;
+    left: 50%; /* Center the slider container horizontally */
+    transform: translate(-50%, -50%); /* Center the slider container vertically and horizontally */
+    height: 400px; /* Adjust height as needed */
+    width: 50px;
+}
+
+.slider {
+    -webkit-appearance: slider-vertical; /* For WebKit browsers */
+    appearance: slider-vertical;
+    width: 100px; /* Adjust width as needed */
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    transition: transform 0.3s ease; /* Add transition for smooth scaling */
+}
+
+.slider:hover::-webkit-slider-thumb {
+    transform: scale(2); /* Scale the thumb on hover */
+    background-color: #ff0000; /* Change background color on hover */
+}
+
+/* Normal button style */
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: blue;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+/* Button style when hovered over */
+.button:hover {
+    background-color: #45a049; /* Darker green */
+    color: white;
+    transform: scale(1.1); /* Enlarge button */
+}
